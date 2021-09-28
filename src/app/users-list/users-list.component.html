@@ -1,0 +1,64 @@
+<div class="container-fluid">
+  <div class="shadow-lg ">
+    <div class="clo-md-6" style="margin-left: 2em;">
+      <button type="button" class="btn btn-outline-warning" data-mdb-ripple-color="dark" (click)="buttonHandle()">
+        Добавить пользователя
+      </button>
+      <div *ngIf="pressed">
+        <app-add-users></app-add-users>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-5 ">
+        <table class="table table-hover text-nowrap ">
+          <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col">Имя</th>
+              <th scope="col">Логин</th>
+              <th scope="col">E-mail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let users of users$ | slice:1; index as i;">
+              <th scope="row">{{users.id}}</th>
+              <td *ngIf="isEditing && i == enableIndex; else elseBlockName">
+                <app-edit-user [id]="users.id" [users]="users" [name]=true [username]=false [email]=false
+                  [button]=false>
+                </app-edit-user>
+              </td>
+              <td *ngIf="isEditing && i == enableIndex; else elseBlockUsername">
+                <app-edit-user [id]="users.id" [users]="users" [name]=false [username]=true [email]=false
+                  [button]=false>
+                </app-edit-user>
+              </td>
+              <td *ngIf="isEditing && i == enableIndex; else elseBlockMail">
+                <app-edit-user [id]="users.id" [users]="users" [name]=false [username]=false [email]=true
+                  [button]=false>
+                </app-edit-user>
+              </td>
+              <td>
+                <app-edit-user *ngIf="isEditing && i == enableIndex" [id]="users.id" [users]="users" [name]=false
+                  [username]=false [email]=false [button]=true (flag)="editAppCancelButton()"
+                  (edit)="editAppUser(users)">
+                </app-edit-user>
+                <button class="btn btn-warning" (click)="openInput(i)">Редактировать</button>
+                <app-remove-user (remove)="removeAppUser(users.id)">
+                </app-remove-user>
+              </td>
+              <ng-template #elseBlockName>
+                <td>{{users.name}}</td>
+              </ng-template>
+              <ng-template #elseBlockUsername>
+                <td>{{users.username}}</td>
+              </ng-template>
+              <ng-template #elseBlockMail>
+                <td>{{users.email}}</td>
+              </ng-template>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

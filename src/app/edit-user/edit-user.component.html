@@ -1,0 +1,5 @@
+<input *ngIf="name " [(ngModel)]="users.name" name="name">
+<input *ngIf="username " [(ngModel)]="users.username" name="username">
+<input *ngIf="email " [(ngModel)]="users.email" name="email">
+<button *ngIf="button " class="btn btn-info" (click)="editComplete()">Подтвердить</button>
+<button *ngIf="button" class="btn btn-success" (click)="setButtonFalse()">Отмена</button>
