@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 /*9.	По инструкции или по примеру с пары подключить в app.module.ts HttpClientModule */
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -11,6 +11,8 @@ import { FormsModule } from '@angular/forms';
 import { UsersListComponent } from './users-list/users-list.component';
 import { RemoveUserComponent } from './remove-user/remove-user.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { LoginFormComponent } from './login-form/login-form.component';
+import { AuthInterceptor } from './icterceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     AddUsersComponent,
     UsersListComponent,
     RemoveUserComponent,
-    EditUserComponent
+    EditUserComponent,
+    LoginFormComponent
     
   ],
   imports: [
@@ -27,7 +30,12 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [DataService],
+  providers: [DataService,
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true,
+  },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

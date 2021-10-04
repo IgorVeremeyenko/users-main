@@ -1,0 +1,44 @@
+<div *ngIf="isLogged else form" >
+    <div class="position-relative">
+        <h1>Hello {{userName}}!</h1>
+        <button (click)="logOut()">Выйти</button>
+        <app-users-list></app-users-list>
+    </div>
+</div>
+
+<ng-template #form>
+    <form (ngSubmit)="onSubmit()" #formdata="ngForm" id="formId" >
+
+        <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="formLogin">Имя</label>
+                <div class="col-sm-10">
+                    <input type="text" id="formLogin" name="username" class="form-control"
+                        [(ngModel)]="loginData.username" required />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="formPassword">Имя</label>
+                <div class="col-sm-10">
+                    <input type="password" id="formPassword" name="password" class="form-control"
+                        [(ngModel)]="loginData.password" required />
+                </div>
+            </div>
+            
+            <div class="form-group row">
+                <div class="col-sm-1">
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-outline-dark">Войти</button>
+                </div>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="defaultCheck1" [(ngModel)]="rememberMe"
+                (change)="checkValue(rememberMe?'A':'B')" [ngModelOptions]="{standalone: true}">
+                <label class="form-check-label" for="defaultCheck1">
+                  Запомнить меня
+                </label>
+              </div>
+        </div>
+
+    </form>
+</ng-template>
