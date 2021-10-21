@@ -8,42 +8,47 @@ import { AuthService, LoginModule } from '../services/auth.service';
 })
 export class LoginFormComponent implements OnInit {
 
-  ngOnInit(){    
+  ngOnInit() {
     const key = localStorage.getItem("loginKey");
-    if(key){
+    this.userName = localStorage.getItem("Username") as string;
+    if (key) {
       this.authService.loginByToken()
-      .subscribe(        
-        () => this.isLogged = true        
-      )      
+        .subscribe(
+          () => { 
+            this.isLogged = true;             
+          }
+        )
     }
-    
+
   }
-  checkValue(event: any){
-    console.log(event);
+  checkValue(event: any) {
     this.rememberMe = true;
- }
+  }
 
   loginData: LoginModule = {
-    username : '',
-    password : ''
+    username: '',
+    password: ''
   }
 
   isLogged = false;
   userName = '';
   rememberMe = false;
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService) { }
 
   onSubmit(): void {
     this.authService.login(this.loginData)
-    .subscribe(() => {
-      this.isLogged = true;
-      this.userName = this.authService.tokenData$.value.username;
-      this.rememberMe ? localStorage.setItem("loginKey", this.authService.saveToken$!) : false;
-    });
-  }  
+      .subscribe(() => {
+        this.isLogged = true;
+        this.userName = this.authService.tokenData$.value.username;
+        if(this.rememberMe){
+          localStorage.setItem("loginKey", this.authService.saveToken$);
+          localStorage.setItem("Username", this.userName)
+        }        
+      });
+  }
   logOut() {
-    localStorage.setItem("loginKey", '');
+    localStorage.clear();
     this.isLogged = false;
   }
 
